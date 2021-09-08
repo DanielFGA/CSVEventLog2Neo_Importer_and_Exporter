@@ -1,0 +1,33 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '7.0.0'
+}
+
+group 'de.haw'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.20'
+    annotationProcessor 'org.projectlombok:lombok:1.18.20'
+
+    implementation group: 'com.opencsv', name: 'opencsv', version: '4.4'
+    implementation group: 'org.yaml', name: 'snakeyaml', version: '1.29'
+
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.0-alpha5'
+
+    implementation group: 'org.neo4j.driver', name: 'neo4j-java-driver', version: '4.2.0'
+
+    implementation group: 'org.camunda.bpm', name: 'camunda-engine', version: '7.15.0'
+
+}
+
+test {
+    useJUnitPlatform()
+}

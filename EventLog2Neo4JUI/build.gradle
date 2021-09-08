@@ -1,0 +1,26 @@
+plugins {
+    id 'java'
+}
+
+group 'de.haw'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.20'
+    annotationProcessor 'org.projectlombok:lombok:1.18.20'
+
+    implementation group: 'org.yaml', name: 'snakeyaml', version: '1.29'
+
+    implementation project(':EventLog2Neo4JCore')
+}
+
+test {
+    useJUnitPlatform()
+}

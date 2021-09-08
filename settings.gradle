@@ -1,0 +1,5 @@
+rootProject.name = 'EventLog2Neo4J'
+include 'EventLog2Neo4JUI'
+include 'EventLog2Neo4JCore'
+include 'EventLog2Neo4jCamundaDemo'
+

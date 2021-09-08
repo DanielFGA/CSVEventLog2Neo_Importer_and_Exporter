@@ -1,0 +1,18 @@
+database:
+  host: 'localhost'
+  port: 7687
+  user: 'neo4j'
+  password: '1234'
+event_log:
+  path: 'DemoLog.csv'
+  separator: ','
+  date_time_pattern: "EEE MMM dd HH:mm:ss z yyyy"
+  required_attributes:
+    case_id: 'processId'
+    activity: 'activity'
+    time_stamp: 'timestamp'
+  attributes:
+    - 'movie'
+    - 'amount'
+    - 'isAvailable'
+    - 'printed'
