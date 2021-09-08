@@ -1,0 +1,9 @@
+
+# Project exclude paths
+/.gradle/
+/build/
+/EventLog2Neo4JCamundaDemo/target/
+/EventLog2Neo4JCore/build/
+/EventLog2Neo4JCore/build/classes/java/main/
+/EventLog2Neo4JUI/build/
+/EventLog2Neo4JUI/build/classes/java/main/
