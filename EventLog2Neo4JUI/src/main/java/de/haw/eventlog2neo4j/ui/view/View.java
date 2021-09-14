@@ -19,6 +19,10 @@ public class View extends JFrame {
     public View(Controller controller) {
         JPanel jPanel = new JPanel();
         JButton button = new JButton("Upload Configuration File");
+        JPanel radioButtonPanel = new JPanel(new GridLayout(0, 1));
+        ButtonGroup group = new ButtonGroup();
+        JRadioButton extractButton = new JRadioButton("extract");
+
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.addActionListener(e -> {
             JFileChooser chooser = new JFileChooser(new File("."));
@@ -42,12 +46,12 @@ public class View extends JFrame {
                     break;
             }
         });
-        JPanel radioButtonPanel = new JPanel(new GridLayout(0, 1));
-        ButtonGroup group = new ButtonGroup();
+
         this.loadButton.setSelected(true);
+
         group.add(this.loadButton);
-        JRadioButton extractButton = new JRadioButton("extract");
         group.add(extractButton);
+
         radioButtonPanel.add(extractButton);
         radioButtonPanel.add(this.loadButton);
 
@@ -56,6 +60,7 @@ public class View extends JFrame {
         jPanel.add(button);
         jPanel.add(radioButtonPanel);
         jPanel.add(this.resultOutput);
+
         this.add(jPanel);
         this.setSize(310, 120);
         this.addWindowListener(new WindowAdapter() {
