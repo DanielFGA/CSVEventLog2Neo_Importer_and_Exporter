@@ -29,7 +29,7 @@ public class Neo4jExtractor implements Extractor<String, Log> {
     public Log extract(String logName) {
         attributes.clear();
         Log log = getLog(logName);
-        extractTraces(log).forEach(log::addTrace);
+        sortTraces(extractTraces(log), log.getDateTimePattern()).forEach(log::addTrace);
         return log;
     }
 
@@ -72,24 +72,24 @@ public class Neo4jExtractor implements Extractor<String, Log> {
         List<Event> events;
         Map<Integer, List<Attribute>> eventAttributes = new HashMap<>();
         Session session = this.neo4jClient.getDriver().session();
-        Result result = session.run(String.format("MATCH (e:event)--%s MATCH (e)--(a:attribute) RETURN ID(e),a",
+        Result result = session.run(String.format("MATCH (e:event)--%s MATCH (e)--(a:attribute) RETURN ID(e),a,labels(a)",
                 trace.toNeo4jNode()));
         while (result.hasNext()) {
             Record currentRecord = result.next();
             int eventId = currentRecord.get(0).asInt();
             eventAttributes.computeIfAbsent(eventId, k -> new ArrayList<>());
-            eventAttributes.get(eventId).add(extractAttribute(currentRecord.get(1)));
+            eventAttributes.get(eventId).add(extractAttribute(currentRecord.get(1), currentRecord.get(2)));
         }
         events = sortEvents(createEvents(log, eventAttributes), log.getDateTimePattern());
         connectEvents(events);
         return events;
     }
 
-    private Attribute extractAttribute(Value attributeValue) {
+    private Attribute extractAttribute(Value attributeValue, Value labels) {
         Attribute attribute = new Attribute(
                 attributeValue.get("name").asString(),
                 attributeValue.get("value").asString());
-        attribute.getLabels().forEach(attribute::addLabel);
+        labels.asList(Value::asString).forEach(attribute::addLabel);
         if (!this.attributes.contains(attribute)) {
             this.attributes.add(attribute);
             return attribute;
@@ -128,9 +128,9 @@ public class Neo4jExtractor implements Extractor<String, Log> {
 
     private List<Event> sortEvents(List<Event> events, String timestampPattern) {
         return events.stream()
-                .sorted((o1, o2) -> {
-                    LocalDateTime eventTime1 = toLocalDateTime(o1.getTimeStamp().getValue(), timestampPattern);
-                    LocalDateTime eventTime2 = toLocalDateTime(o2.getTimeStamp().getValue(), timestampPattern);
+                .sorted((event1, event2) -> {
+                    LocalDateTime eventTime1 = toLocalDateTime(event1.getTimeStamp().getValue(), timestampPattern);
+                    LocalDateTime eventTime2 = toLocalDateTime(event2.getTimeStamp().getValue(), timestampPattern);
                     return eventTime1.compareTo(eventTime2);
                 })
                 .collect(Collectors.toList());
@@ -140,6 +140,16 @@ public class Neo4jExtractor implements Extractor<String, Log> {
         for (int i = 0; i < events.size()-1; i++) {
             events.get(i).setNextEvent(events.get(i+1));
         }
+    }
+
+    private List<Trace> sortTraces(List<Trace> traces, String timestampPattern) {
+        return traces.stream()
+                .sorted((trace1, trace2) -> {
+                    LocalDateTime eventTime1 = toLocalDateTime(trace1.getFirstEvent().getTimeStamp().getValue(), timestampPattern);
+                    LocalDateTime eventTime2 = toLocalDateTime(trace2.getFirstEvent().getTimeStamp().getValue(), timestampPattern);
+                    return eventTime1.compareTo(eventTime2);
+                })
+                .collect(Collectors.toList());
     }
 
 

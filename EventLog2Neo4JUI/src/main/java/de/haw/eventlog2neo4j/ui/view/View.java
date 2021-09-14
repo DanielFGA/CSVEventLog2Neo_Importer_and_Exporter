@@ -8,7 +8,6 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.io.FileNotFoundException;
 
 import static de.haw.eventlog2neo4j.ui.controller.Controller.CONFIG_ERROR_MESSAGE;
 
@@ -32,12 +31,7 @@ public class View extends JFrame {
                     if (loadButton.isSelected()) {
                         controller.loadCSVEventLogToNeo4j(chooser.getSelectedFile().getAbsolutePath());
                     } else {
-                        try {
-                            controller.extractCSVEventLogFromNeo4j(chooser.getSelectedFile().getAbsolutePath());
-                        } catch (FileNotFoundException ex) {
-                            this.setOutput(String.format("Error during exporting: %s", ex.getMessage()));
-                            ex.printStackTrace();
-                        }
+                        controller.extractCSVEventLogFromNeo4j(chooser.getSelectedFile().getAbsolutePath());
                     }
                     this.setOutput("Success");
                     break;

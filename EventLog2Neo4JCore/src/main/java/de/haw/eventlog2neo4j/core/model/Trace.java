@@ -21,6 +21,12 @@ public class Trace {
         return this.events.isEmpty();
     }
 
+    public Event getFirstEvent() {
+        return this.isEmpty() ?
+                null :
+                events.get(0);
+    }
+
     public Event getLastEvent() {
         return this.isEmpty() ?
                 null :
