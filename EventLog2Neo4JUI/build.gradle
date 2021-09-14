@@ -1,9 +1,12 @@
 plugins {
     id 'java'
+    id 'com.github.johnrengelman.shadow' version '7.0.0'
 }
 
 group 'de.haw'
-version '1.0-SNAPSHOT'
+version '0.0.1'
+
+jar.baseName('EventLog2Neo4jUI')
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -23,4 +26,17 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'de.haw.eventlog2neo4j.ui.app.EventLog2Neo4jUI'
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+shadowJar{
+    archiveFileName = "EventLog2Neo4jUI.jar"
 }

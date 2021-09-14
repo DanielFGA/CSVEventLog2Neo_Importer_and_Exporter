@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'de.haw'
-version '1.0-SNAPSHOT'
+version '0.0.1'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -30,4 +30,8 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+shadowJar{
+    archiveFileName = "eventlog2neo4j.jar"
 }

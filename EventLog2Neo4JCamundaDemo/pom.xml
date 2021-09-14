@@ -44,7 +44,7 @@
             <artifactId>EventLog2Neo4jCore</artifactId>
             <version>1.0</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/../EventLog2Neo4JCore/build/libs/EventLog2Neo4JCore-1.0-SNAPSHOT-all.jar</systemPath>
+            <systemPath>${project.basedir}/../EventLog2Neo4JCore/build/libs/eventlog2neo4j.jar</systemPath>
         </dependency>
     </dependencies>
 
